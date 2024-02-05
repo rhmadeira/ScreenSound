@@ -3,11 +3,6 @@
 internal class Artista 
 {
     private List<Musica> musicas = new List<Musica>();
-
-    public Artista()
-    {
-
-    }
     
     public Artista(string nome, string bio)
     {

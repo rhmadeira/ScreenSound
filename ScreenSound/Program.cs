@@ -5,14 +5,8 @@ using ScreenSound.Modelos;
 try
 {
     var artistaDAL = new ArtistaDAL();
-    Artista art = new Artista("The Beatles", "Bio dos Beatles");
-
-    Artista art2 = new Artista();
-    art2.Nome = "The Beatles";
-    art2.Bio = "Bio dos Beatles";
-
-
-    artistaDAL.AdicionarArtista(art);
+    //Artista art = new Artista("The Beatles", "Bio dos Beatles");
+    //artistaDAL.AdicionarArtista(art);
     var artistas = artistaDAL.ObterTodosOsArtistas();
 
     foreach (var artista in artistas)
