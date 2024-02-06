@@ -5,46 +5,41 @@ namespace ScreenSound.Data;
 
 internal class ArtistaDAL
 {
+    private readonly ScreenSoundContext _context;
+
+    public ArtistaDAL(ScreenSoundContext context)
+    {
+        _context = context;
+    }
 
     public IEnumerable<Artista> ObterTodosOsArtistas()
     {
-        var list = new List<Artista>();
 
-        using var connection = new Connection().ObterConeccao();
-        connection.Open();
-
-        string sql = "SELECT * FROM Artistas";
-        SqlCommand command = new SqlCommand(sql, connection);
-        using SqlDataReader reader = command.ExecuteReader();
-
-        while (reader.Read())
-        {
-            int idArtista = Convert.ToInt32(reader["Id"]);
-            string nomeArtista = Convert.ToString(reader["Nome"]);
-            string bioArtista = reader["Bio"].ToString();
-            Artista artista = new(nomeArtista, bioArtista)
-            {
-                Id = idArtista
-            };
-
-            list.Add(artista);
-        }
-
-        return list;
+        return _context.Artistas.ToList();
     }
 
     public void AdicionarArtista(Artista artista)
     {
-        using var connection = new Connection().ObterConeccao();
-        connection.Open();
 
-        string sql = "INSERT INTO Artistas (Nome, FotoPerfil, Bio) VALUES (@Nome, @FotoPerfil, @Bio)";
-        SqlCommand command = new SqlCommand(sql, connection);
-        command.Parameters.AddWithValue("@Nome", artista.Nome);
-        command.Parameters.AddWithValue("@FotoPerfil", artista.FotoPerfil);
-        command.Parameters.AddWithValue("@Bio", artista.Bio);
-        var res = command.ExecuteNonQuery();
+        _context.Artistas.Add(artista);
+        _context.SaveChanges();
+    }
 
-        Console.WriteLine($"Linhas afetadas {res}" );
+    public void AtualizarArtista(Artista artista)
+    {
+        _context.Artistas.Update(artista);
+        _context.SaveChanges();
+    }
+
+    public void RemoverArtista(Artista artista)
+    {
+        _context.Artistas.Remove(artista);
+        _context.SaveChanges();
+    }
+
+    public Artista ObterArtistasPorNome(string nome)
+    {
+        var artista = _context.Artistas.FirstOrDefault(a => a.Nome == nome);
+        return artista is not null ? artista : null;
     }
 }

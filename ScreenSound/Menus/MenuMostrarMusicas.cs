@@ -1,20 +1,22 @@
-﻿using ScreenSound.Modelos;
+﻿using ScreenSound.Data;
+using ScreenSound.Modelos;
 
 namespace ScreenSound.Menus;
 
 internal class MenuMostrarMusicas : Menu
 {
-    public override void Executar(Dictionary<string, Artista> artistasRegistrados)
+    public override void Executar(ArtistaDAL artistaDAL)
     {
-        base.Executar(artistasRegistrados);
+        base.Executar(artistaDAL);
         ExibirTituloDaOpcao("Exibir detalhes do artista");
         Console.Write("Digite o nome do artista que deseja conhecer melhor: ");
         string nomeDoArtista = Console.ReadLine()!;
-        if (artistasRegistrados.ContainsKey(nomeDoArtista))
+        var artistasEncontrado = artistaDAL.ObterArtistasPorNome(nomeDoArtista);
+
+        if (artistasEncontrado is not null)
         {
-            Artista artista = artistasRegistrados[nomeDoArtista];
             Console.WriteLine("\nDiscografia:");
-            artista.ExibirDiscografia();
+            artistasEncontrado.ExibirDiscografia();
             Console.WriteLine("\nDigite uma tecla para voltar ao menu principal");
             Console.ReadKey();
             Console.Clear();

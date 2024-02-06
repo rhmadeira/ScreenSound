@@ -2,37 +2,15 @@
 using ScreenSound.Menus;
 using ScreenSound.Modelos;
 
-try
-{
-    var artistaDAL = new ArtistaDAL();
-    //Artista art = new Artista("The Beatles", "Bio dos Beatles");
-    //artistaDAL.AdicionarArtista(art);
-    var artistas = artistaDAL.ObterTodosOsArtistas();
-
-    foreach (var artista in artistas)
-    {
-        Console.WriteLine(artista);
-    }
-}
-catch (Exception ex)
-{
-    Console.WriteLine("Erro: " + ex.Message);
-}
-return;
-
-Artista ira = new Artista("Ira!", "Banda Ira!");
-Artista beatles = new("The Beatles", "Banda The Beatles");
-
-Dictionary<string, Artista> artistasRegistrados = new();
-artistasRegistrados.Add(ira.Nome, ira);
-artistasRegistrados.Add(beatles.Nome, beatles);
-
 Dictionary<int, Menu> opcoes = new();
 opcoes.Add(1, new MenuRegistrarArtista());
 opcoes.Add(2, new MenuRegistrarMusica());
 opcoes.Add(3, new MenuMostrarArtistas());
 opcoes.Add(4, new MenuMostrarMusicas());
 opcoes.Add(-1, new MenuSair());
+
+var _context = new ScreenSoundContext();
+var artistaDAL = new ArtistaDAL(_context);
 
 void ExibirLogo()
 {
@@ -61,10 +39,11 @@ void ExibirOpcoesDoMenu()
     string opcaoEscolhida = Console.ReadLine()!;
     int opcaoEscolhidaNumerica = int.Parse(opcaoEscolhida);
 
+
     if (opcoes.ContainsKey(opcaoEscolhidaNumerica))
     {
         Menu menuASerExibido = opcoes[opcaoEscolhidaNumerica];
-        menuASerExibido.Executar(artistasRegistrados);
+        menuASerExibido.Executar(artistaDAL);
         if (opcaoEscolhidaNumerica > 0) ExibirOpcoesDoMenu();
     } 
     else
