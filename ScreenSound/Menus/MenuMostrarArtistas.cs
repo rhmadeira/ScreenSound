@@ -10,7 +10,7 @@ internal class MenuMostrarArtistas : Menu
         base.Executar(artistaDAL);
         ExibirTituloDaOpcao("Exibindo todos os artistas registradas na nossa aplicação");
 
-        var artistasRegistrados = artistaDAL.ObterTodosOsArtistas();
+        var artistasRegistrados = artistaDAL.Listar();
         
         foreach (var artista in artistasRegistrados)
         {
