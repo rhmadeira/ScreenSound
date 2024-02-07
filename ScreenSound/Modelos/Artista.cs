@@ -2,15 +2,8 @@
 
 namespace ScreenSound.Modelos; 
 
-internal class Artista 
+public class Artista 
 {
-    private readonly ScreenSoundContext _context;
-    
-    public Artista(ScreenSoundContext context)
-    {
-        _context = context;
-    }
-    
     public Artista(string nome, string bio)
     {
         Nome = nome;
@@ -18,8 +11,8 @@ internal class Artista
         FotoPerfil = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
     }
 
-    
 
+    public virtual ICollection<Musica> Musicas { get; set; } = new List<Musica>();
     public string Nome { get; set; }
     public string FotoPerfil { get; set; }
     public string Bio { get; set; }
@@ -27,17 +20,15 @@ internal class Artista
 
     public void AdicionarMusica(Musica musica)
     {
-        _context.Musicas.Add(musica);
-        _context.SaveChanges();
+        Musicas.Add(musica);
     }
 
     public void ExibirDiscografia()
     {
-        var musicas = _context.Musicas.ToList();
         Console.WriteLine($"Discografia do artista {Nome}");
-        foreach (var musica in musicas)
+        foreach (var musica in Musicas)
         {
-            Console.WriteLine($"Música: {musica.Nome}");
+            Console.WriteLine($"Música: {musica.Nome} - Ano de Lançamento: {musica.AnoLancamento}");
         }
     }
 
